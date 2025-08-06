@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Central de TI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Gerenciamento</h1>
+        <nav>
+            <a href="dashboard.html">Voltar para o Dashboard</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="admin-grid">
+            <!-- Formulário de Inventário -->
+            <div class="form-container">
+                <h3>Adicionar Item ao Armazém</h3>
+                <input type="text" id="itemName" placeholder="Nome do Item">
+                <input type="number" id="itemQuantity" placeholder="Quantidade">
+                <input type="text" id="itemImage" placeholder="Caminho da Imagem (ex: images/novo.png)">
+                <button id="addInventoryBtn">Adicionar Item</button>
+            </div>
+            
+            <!-- Formulário de Drivers -->
+            <div class="form-container">
+                <h3>Adicionar Driver</h3>
+                <input type="text" id="driverName" placeholder="Nome do Driver">
+                <input type="text" id="driverCategory" placeholder="Categoria (ex: Rede, Impressora)">
+                <input type="url" id="driverLink" placeholder="Link para Download">
+                <button id="addDriverBtn">Adicionar Driver</button>
+            </div>
+            
+            <!-- Formulário de Códigos -->
+            <div class="form-container">
+                <h3>Adicionar Código</h3>
+                <input type="text" id="codeName" placeholder="Nome do Código (ex: Limpar Cache DNS)">
+                <input type="text" id="codeCategory" placeholder="Categoria (ex: Rede)">
+                <textarea id="codeDescription" placeholder="Breve descrição da função do código" rows="2"></textarea>
+                <textarea id="codeContent" placeholder="Cole o código aqui" rows="4"></textarea>
+                <button id="addCodeBtn">Adicionar Código</button>
+            </div>
+            
+            <!-- Formulário de Arquivos -->
+            <div class="form-container">
+                <h3>Adicionar Arquivo</h3>
+                <input type="text" id="fileName" placeholder="Nome do Arquivo">
+                <input type="text" id="filePath" placeholder="Caminho do Arquivo (ex: files/arquivo.pdf)">
+                <button id="addFileBtn">Adicionar Arquivo</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="admin.js"></script>
+</body>
+</html>

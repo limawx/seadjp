@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Central de TI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Central de TI</h1>
+        <nav>
+            <a href="admin.html">Gerenciar Itens</a>
+            <button id="logoutBtn">Sair</button>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Seção do Armazém -->
+        <section id="inventory-section">
+            <h2><img src="images/box.svg" class="section-icon">Armazém de Itens</h2>
+            <div id="inventoryList" class="inventory-grid"></div>
+        </section>
+
+        <!-- Seção de Drivers -->
+        <section id="drivers-section">
+            <h2><img src="images/driver.svg" class="section-icon">Drivers</h2>
+            <input type="text" id="driverFilter" onkeyup="filterDrivers()" placeholder="Filtrar por nome ou categoria...">
+            <ul id="driverList"></ul>
+        </section>
+
+        <!-- Seção de Códigos -->
+        <section id="codes-section">
+            <h2><img src="images/code.svg" class="section-icon">Códigos CMD / PowerShell</h2>
+            
+            <!-- Botões de Filtro por Categoria -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterCodesByCategory('')">Todos</button>
+                <button class="filter-btn" onclick="filterCodesByCategory('Rede')">Rede</button>
+                <button class="filter-btn" onclick="filterCodesByCategory('Sistema')">Sistema</button>
+                <button class="filter-btn" onclick="filterCodesByCategory('Windows')">Windows</button>
+                <button class="filter-btn" onclick="filterCodesByCategory('Diagnóstico')">Diagnóstico</button>
+                <button class="filter-btn" onclick="filterCodesByCategory('Segurança')">Segurança</button>
+                <button class="filter-btn" onclick="filterCodesByCategory('Manutenção')">Manutenção</button>
+            </div>
+            
+            <input type="text" id="codeFilter" onkeyup="filterCodes()" placeholder="Filtrar por nome...">
+            <div id="codeList"></div>
+        </section>
+
+        <!-- Seção de Arquivos -->
+        <section id="files-section">
+            <h2><img src="images/file.svg" class="section-icon">Aplicativos</h2>
+            <ul id="fileList"></ul>
+        </section>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

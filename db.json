@@ -1,0 +1,253 @@
+{
+  "inventory": [
+    {
+      "id": 1,
+      "name": "Fonte 200W",
+      "quantity": 9
+    },
+    {
+      "id": 2,
+      "name": "Teclado USB Dell",
+      "quantity": 5
+    },
+    {
+      "id": 3,
+      "name": "Mouse",
+      "quantity": 8
+    },
+    {
+      "id": 4,
+      "name": "Cabo HDMI",
+      "quantity": 7
+    },
+    {
+      "id": 5,
+      "name": "Teclado",
+      "quantity": 4
+    }
+  ],
+  "drivers": [
+    {
+      "id": 101,
+      "name": "Driver Impressora HP LaserJet P1102w",
+      "category": "Impressora",
+      "link": "https://support.hp.com/br-pt/drivers/selfservice/hp-laserjet-pro-p1102-printer-series/4110394/model/4110395"
+    },
+    {
+      "id": 102,
+      "name": "Driver de Rede Realtek PCIe GBE",
+      "category": "Rede",
+      "link": "https://www.realtek.com/en/component/zoo/category/network-interface-controllers-10-100-1000m-gigabit-ethernet-pci-express-software"
+    }
+  ],
+  "codes": [
+    {
+      "id": 201,
+      "name": "Ativar Windows 10 Pro",
+      "category": "Windows",
+      "description": "slmgr /ipk - Instala a chave do produto\nslmgr /skms - Define o servidor KMS\nslmgr /ato - Ativa o Windows",
+      "content": "slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX\nslmgr /skms kms.seu-servidor.com\nslmgr /ato"
+    },
+    {
+      "id": 202,
+      "name": "Verificar saúde do disco (CHKDSK)",
+      "category": "Diagnóstico",
+      "description": "chkdsk C: - Verifica o disco C\n/f - Corrige erros encontrados\n/r - Recupera informações de setores danificados",
+      "content": "chkdsk C: /f /r"
+    },
+    {
+      "id": 203,
+      "name": "Verificar integridade dos arquivos (SFC)",
+      "category": "Diagnóstico",
+      "description": "sfc /scannow - Verifica e repara arquivos do sistema corrompidos",
+      "content": "sfc /scannow"
+    },
+    {
+      "id": 204,
+      "name": "Lista de processos em execução",
+      "category": "Diagnóstico",
+      "description": "tasklist - Lista todos os processos ativos\nwmic process - Mostra informações detalhadas dos processos",
+      "content": "tasklist\nwmic process get name,processid,workingsetsize"
+    },
+    {
+      "id": 205,
+      "name": "Limpar Cache DNS",
+      "category": "Rede",
+      "description": "ipconfig /flushdns - Limpa o cache DNS\nipconfig /registerdns - Registra o DNS\nipconfig /release - Libera o IP atual\nipconfig /renew - Renova o IP",
+      "content": "ipconfig /flushdns\nipconfig /registerdns\nipconfig /release\nipconfig /renew"
+    },
+    {
+      "id": 206,
+      "name": "Verificar conectividade de rede",
+      "category": "Rede",
+      "description": "ping 8.8.8.8 - Testa conectividade com Google DNS\nping google.com - Testa resolução DNS\nnslookup google.com - Consulta servidor DNS\ntracert google.com - Mostra rota até o destino",
+      "content": "ping 8.8.8.8\nping google.com\nnslookup google.com\ntracert google.com"
+    },
+    {
+      "id": 207,
+      "name": "Configurar IP estático",
+      "category": "Rede",
+      "description": "netsh interface ip set address - Configura IP estático\nnetsh interface ip set dns - Configura servidor DNS",
+      "content": "netsh interface ip set address \"Ethernet\" static 192.168.1.100 255.255.255.0 192.168.1.1\nnetsh interface ip set dns \"Ethernet\" static 8.8.8.8"
+    },
+    {
+      "id": 208,
+      "name": "Verificar conexões de rede ativas",
+      "category": "Rede",
+      "description": "netstat -an - Mostra todas as conexões e portas\nnetstat -b - Mostra qual programa usa cada conexão",
+      "content": "netstat -an\nnetstat -b"
+    },
+    {
+      "id": 209,
+      "name": "Verificar serviços do Windows",
+      "category": "Sistema",
+      "description": "sc query - Lista todos os serviços\nnet start - Mostra serviços iniciados\nservices.msc - Abre gerenciador de serviços",
+      "content": "sc query\nnet start\nservices.msc"
+    },
+    {
+      "id": 210,
+      "name": "Gerenciar usuários",
+      "category": "Sistema",
+      "description": "net user - Lista usuários do sistema\nnet localgroup administrators - Lista administradores\nlusrmgr.msc - Abre gerenciador de usuários",
+      "content": "net user\nnet localgroup administrators\nlusrmgr.msc"
+    },
+    {
+      "id": 211,
+      "name": "Verificar informações do sistema",
+      "category": "Sistema",
+      "description": "systeminfo - Mostra informações detalhadas do sistema\nwmic computersystem - Informações do hardware",
+      "content": "systeminfo\nwmic computersystem get name,manufacturer,model"
+    },
+    {
+      "id": 212,
+      "name": "Gerenciar discos",
+      "category": "Sistema",
+      "description": "diskpart - Abre ferramenta de gerenciamento de discos\nlist disk - Lista todos os discos\nlist volume - Lista todos os volumes",
+      "content": "diskpart\nlist disk\nlist volume"
+    },
+    {
+      "id": 213,
+      "name": "Verificar firewall",
+      "category": "Segurança",
+      "description": "netsh advfirewall show allprofiles - Mostra status de todos os perfis\nnetsh advfirewall show currentprofile - Mostra perfil atual",
+      "content": "netsh advfirewall show allprofiles\nnetsh advfirewall show currentprofile"
+    },
+    {
+      "id": 214,
+      "name": "Configurar firewall",
+      "category": "Segurança",
+      "description": "netsh advfirewall set allprofiles state on - Ativa firewall\nnetsh advfirewall firewall add rule - Adiciona regra personalizada",
+      "content": "netsh advfirewall set allprofiles state on\nnetsh advfirewall firewall add rule name=\"Allow Port 80\" dir=in action=allow protocol=TCP localport=80"
+    },
+    {
+      "id": 215,
+      "name": "Verificar antivírus",
+      "category": "Segurança",
+      "description": "wmic AntiVirusProduct - Lista antivírus instalados e status de proteção",
+      "content": "wmic /node:localhost /namespace:\\\\root\\SecurityCenter2 path AntiVirusProduct get displayName,productState"
+    },
+    {
+      "id": 216,
+      "name": "Verificar políticas de segurança",
+      "category": "Segurança",
+      "description": "gpresult /r - Mostra políticas de grupo aplicadas\nsecpol.msc - Abre configurações de segurança local",
+      "content": "gpresult /r\nsecpol.msc"
+    },
+    {
+      "id": 217,
+      "name": "Limpeza de disco",
+      "category": "Manutenção",
+      "description": "cleanmgr - Abre limpeza de disco\nsfc /scannow - Verifica integridade dos arquivos\ndism - Repara imagem do sistema",
+      "content": "cleanmgr\nsfc /scannow\ndism /online /cleanup-image /restorehealth"
+    },
+    {
+      "id": 218,
+      "name": "Limpar arquivos temporários",
+      "category": "Manutenção",
+      "description": "del /q /f %temp%\\* - Remove arquivos temporários do usuário\ndel /q /f C:\\Windows\\Temp\\* - Remove arquivos temporários do sistema",
+      "content": "del /q /f %temp%\\*\ndel /q /f C:\\Windows\\Temp\\*"
+    },
+    {
+      "id": 219,
+      "name": "Desfragmentar disco",
+      "category": "Manutenção",
+      "description": "defrag C: /A - Desfragmenta disco C automaticamente\noptimize-drive C: - Otimiza disco (Windows 8+)",
+      "content": "defrag C: /A\noptimize-drive C:"
+    },
+    {
+      "id": 220,
+      "name": "Verificar atualizações do Windows",
+      "category": "Windows",
+      "description": "wuauclt /detectnow - Força detecção de atualizações\nwuauclt /updatenow - Força instalação de atualizações\nwuauclt /reportnow - Gera relatório de atualizações",
+      "content": "wuauclt /detectnow\nwuauclt /updatenow\nwuauclt /reportnow"
+    },
+    {
+      "id": 221,
+      "name": "Verificar logs do sistema",
+      "category": "Diagnóstico",
+      "description": "eventvwr.msc - Abre visualizador de eventos\nwevtutil qe System - Mostra logs do sistema",
+      "content": "eventvwr.msc\nwevtutil qe System /c:10 /f:text"
+    },
+    {
+      "id": 222,
+      "name": "Verificar logs de aplicação",
+      "category": "Diagnóstico",
+      "description": "wevtutil qe Application - Mostra logs de aplicações\nwevtutil qe Security - Mostra logs de segurança",
+      "content": "wevtutil qe Application /c:10 /f:text\nwevtutil qe Security /c:10 /f:text"
+    },
+    {
+      "id": 223,
+      "name": "Verificar temperatura e performance",
+      "category": "Diagnóstico",
+      "description": "wmic MSAcpi_ThermalZoneTemperature - Mostra temperatura do sistema\nperfmon - Abre monitor de performance",
+      "content": "wmic /namespace:\\\\root\\wmi path MSAcpi_ThermalZoneTemperature get CurrentTemperature\nperfmon"
+    },
+    {
+      "id": 224,
+      "name": "Desativar Windows Defender",
+      "category": "Windows",
+      "description": "Set-MpPreference -DisableRealtimeMonitoring - Desativa proteção em tempo real\nSet-MpPreference -DisableIOAVProtection - Desativa proteção de arquivos",
+      "content": "Set-MpPreference -DisableRealtimeMonitoring $true\nSet-MpPreference -DisableIOAVProtection $true"
+    },
+    {
+      "id": 225,
+      "name": "Ativar Windows Defender",
+      "category": "Windows",
+      "description": "Set-MpPreference -DisableRealtimeMonitoring - Reativa proteção em tempo real\nSet-MpPreference -DisableIOAVProtection - Reativa proteção de arquivos",
+      "content": "Set-MpPreference -DisableRealtimeMonitoring $false\nSet-MpPreference -DisableIOAVProtection $false"
+    },
+    {
+      "id": 226,
+      "name": "Verificar licença do Windows",
+      "category": "Windows",
+      "description": "slmgr /xpr - Mostra data de expiração da licença\nslmgr /dlv - Mostra detalhes da licença",
+      "content": "slmgr /xpr\nslmgr /dlv"
+    },
+    {
+      "id": 227,
+      "name": "Reparar Windows Store",
+      "category": "Windows",
+      "description": "wsreset.exe - Reseta cache da Microsoft Store\nGet-AppXPackage - Reinstala aplicativos da Store",
+      "content": "wsreset.exe\nGet-AppXPackage -AllUsers -Name Microsoft.WindowsStore | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register \"$($_.InstallLocation)\\AppXManifest.xml\"}"
+    },
+    {
+      "id": 228,
+      "name": "Reset Completo de Rede",
+      "category": "Rede",
+      "description": "Comandos para resetar completamente a configuração de rede do Windows:\n- netsh winsock reset - Reseta o catálogo Winsock\n- netsh int ip reset - Reseta configurações de IP\n- netsh advfirewall reset - Reseta configurações do firewall\n- ipconfig /flushdns - Limpa cache DNS\n- ipconfig /release - Libera IP atual\n- ipconfig /renew - Renova IP",
+      "content": "netsh winsock reset\nnetsh int ip reset\nnetsh advfirewall reset\nipconfig /flushdns\nipconfig /release\nipconfig /renew"
+    }
+  ],
+  "files": [
+    {
+      "id": 301,
+      "name": "Instalador do 7-Zip",
+      "path": "files/7z-installer.exe"
+    },
+    {
+      "id": 302,
+      "name": "Manual de Rede da Empresa.pdf",
+      "path": "files/manual-rede.pdf"
+    }
+  ]
+}

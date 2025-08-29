@@ -11,7 +11,7 @@
         <h1>Central de TI</h1>
         <nav>
             <button id="themeToggle" title="Alternar tema claro/escuro">🌙</button>
-            <button id="exportBtn" title="Exportar relatórios (Ctrl+E)">📊 Exportar</button>
+            <button id="exportBtn" title="Exportar relatórios (Ctrl+E)">Exportar</button>
             <a href="admin.html">Gerenciar Itens</a>
             <button id="logoutBtn">Sair</button>
         </nav>
@@ -26,13 +26,27 @@
 
         <!-- Seção de Histórico de Retiradas -->
         <section id="withdrawals-section">
-            <h2><span class="section-icon">📋</span>Histórico de Retiradas</h2>
+            <h2>Histórico de Retiradas</h2>
             <div style="margin-bottom: 15px;">
-                <button id="returnItemBtn" class="action-btn" title="Devolver item ao armazém">🔄 Devolver Item</button>
-                <button id="transferItemBtn" class="action-btn" title="Transferir entre setores">🔄 Transferir</button>
-                <button id="batchActionsBtn" class="action-btn" title="Ações em lote">📦 Lotes</button>
+                <button id="returnItemBtn" class="action-btn" title="Devolver item ao armazém">Devolver Item</button>
+                <button id="transferItemBtn" class="action-btn" title="Transferir entre setores">Transferir</button>
+                <button id="batchActionsBtn" class="action-btn" title="Ações em lote">Lotes</button>
             </div>
             <div id="withdrawalsList" class="withdrawals-list"></div>
+        </section>
+
+        <!-- Nova Seção de Ordens de Serviço -->
+        <section id="service-orders-section" class="service-orders-section">
+            <h2>Ordens de Serviço</h2>
+            <button id="addServiceOrderBtn" class="add-service-order-btn">Nova Ordem de Serviço</button>
+            <div id="serviceOrdersList" class="service-orders-list"></div>
+        </section>
+
+        <!-- Nova Seção de Senhas -->
+        <section id="passwords-section" class="passwords-section">
+            <h2>Senhas e Acessos</h2>
+            <button id="addPasswordBtn" class="add-password-btn">Nova Senha</button>
+            <div id="passwordsList" class="passwords-list"></div>
         </section>
 
         <!-- Seção de Drivers -->

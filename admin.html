@@ -53,6 +53,83 @@
             </div>
         </div>
 
+        <!-- Nova seção para Ordens de Serviço -->
+        <div class="admin-grid">
+            <div class="form-container">
+                <h3>Adicionar Ordem de Serviço</h3>
+                <div class="form-row">
+                    <select id="adminServiceType" required>
+                        <option value="">Tipo de Serviço</option>
+                        <option value="maintenance">Manutenção</option>
+                        <option value="inspection">Vistoria/Visita</option>
+                    </select>
+                    <select id="adminServiceSector" required>
+                        <option value="">Setor</option>
+                        <option value="Administrativo">Administrativo</option>
+                        <option value="Financeiro">Financeiro</option>
+                        <option value="Recursos Humanos">Recursos Humanos</option>
+                        <option value="Manutenção">Manutenção</option>
+                        <option value="Limpeza">Limpeza</option>
+                        <option value="Segurança">Segurança</option>
+                        <option value="Educação">Educação</option>
+                        <option value="Saúde">Saúde</option>
+                        <option value="Obras">Obras</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Cultura">Cultura</option>
+                        <option value="Esporte">Esporte</option>
+                        <option value="Meio Ambiente">Meio Ambiente</option>
+                        <option value="Assistência Social">Assistência Social</option>
+                        <option value="Tributação">Tributação</option>
+                        <option value="Engenharia">Engenharia</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="date" id="adminServiceDate" required>
+                    <input type="text" id="adminServiceTechnicians" placeholder="Técnicos Responsáveis" required>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="adminServiceReceptionist" placeholder="Quem Recepcionou" required>
+                    <input type="text" id="adminServiceMaterials" placeholder="Materiais Utilizados">
+                </div>
+                <textarea id="adminServiceDescription" placeholder="Descrição do Serviço/Problema" rows="3" required></textarea>
+                <textarea id="adminServiceSolution" placeholder="Solução Aplicada (para manutenção)" rows="3"></textarea>
+                <textarea id="adminServiceObservations" placeholder="Observações Adicionais" rows="2"></textarea>
+                <button id="addServiceOrderBtn">Adicionar Ordem de Serviço</button>
+            </div>
+
+            <!-- Formulário de Senhas -->
+            <div class="form-container">
+                <h3>Adicionar Senha/Acesso</h3>
+                <input type="text" id="adminPasswordTitle" placeholder="Título (ex: WiFi Setor Administrativo)" required>
+                <select id="adminPasswordCategory" required>
+                    <option value="">Categoria</option>
+                    <option value="WiFi">WiFi</option>
+                    <option value="Roteador">Roteador</option>
+                    <option value="Sistema">Sistema</option>
+                    <option value="Email">Email</option>
+                    <option value="Servidor">Servidor</option>
+                    <option value="Outro">Outro</option>
+                </select>
+                <div class="form-row">
+                    <input type="text" id="adminPasswordUsername" placeholder="Usuário (opcional)">
+                    <input type="password" id="adminPasswordPassword" placeholder="Senha" required>
+                </div>
+                <input type="text" id="adminPasswordUrl" placeholder="URL/IP (opcional)">
+                <textarea id="adminPasswordNotes" placeholder="Observações" rows="2"></textarea>
+                <button id="addPasswordBtn">Adicionar Senha</button>
+            </div>
+        </div>
+
+        <!-- Seção de Salvamento -->
+        <div class="save-section">
+            <h3>Salvar Alterações no Banco de Dados</h3>
+            <p>Depois de adicionar itens, clique no botão para gerar o novo banco de dados. Depois copie todo o texto e colar no arquivo <strong>db.json</strong>, substituindo todo o conteúdo antigo.</p>
+            <button id="generateDbBtn">Gerar Novo Banco de Dados</button>
+            <textarea id="outputDb" readonly placeholder="O conteúdo do banco de dados aparecerá aqui após clicar em 'Gerar Novo Banco de Dados'..."></textarea>
+            <div style="text-align: center;">
+                <button id="copyContentBtn">Copiar Conteúdo</button>
+            </div>
+        </div>
     </main>
 
     <script src="admin.js"></script>

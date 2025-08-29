@@ -53,6 +53,11 @@ async function initializeDatabase() {
             localStorage.setItem('tiDatabase', JSON.stringify(database));
             console.log('Usando dados do arquivo (primeira vez)');
         }
+        
+        // Inicializa arrays vazios se não existirem
+        if (!database.serviceOrders) database.serviceOrders = [];
+        if (!database.passwords) database.passwords = [];
+        
     } catch (error) {
         console.error('Falha ao carregar o banco de dados do arquivo:', error);
         await loadFromLocalStorage();
@@ -227,8 +232,8 @@ function createExportModal() {
     `;
     
     modal.innerHTML = `
-        <h2 style="margin-top: 0; color: #0056b3; border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
-            📊 Exportar Relatórios
+        <h2 style="margin-top: 0; color: var(--btn-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
+            Exportar Relatórios
         </h2>
         
         <div style="margin-bottom: 20px;">
@@ -237,7 +242,7 @@ function createExportModal() {
             <div style="margin: 15px 0;">
                 <label style="display: flex; align-items: center; margin: 10px 0; cursor: pointer;">
                     <input type="radio" name="reportType" value="inventory" checked style="margin-right: 10px;">
-                    📦 Inventário Atual
+                    Inventário Atual
                 </label>
                 <small style="color: var(--text-secondary); margin-left: 25px;">
                     Lista todos os itens com suas quantidades atuais
@@ -247,7 +252,7 @@ function createExportModal() {
             <div style="margin: 15px 0;">
                 <label style="display: flex; align-items: center; margin: 10px 0; cursor: pointer;">
                     <input type="radio" name="reportType" value="withdrawals">
-                    📤 Histórico de Retiradas
+                    Histórico de Retiradas
                 </label>
                 <small style="color: var(--text-secondary); margin-left: 25px;">
                     Todas as retiradas registradas com datas e setores
@@ -257,7 +262,7 @@ function createExportModal() {
             <div style="margin: 15px 0;">
                 <label style="display: flex; align-items: center; margin: 10px 0; cursor: pointer;">
                     <input type="radio" name="reportType" value="complete">
-                    📋 Relatório Completo
+                    Relatório Completo
                 </label>
                 <small style="color: var(--text-secondary); margin-left: 25px;">
                     Inventário + Histórico de retiradas
@@ -270,18 +275,18 @@ function createExportModal() {
             <div style="margin: 10px 0;">
                 <label style="display: flex; align-items: center; margin: 10px 0; cursor: pointer;">
                     <input type="radio" name="format" value="excel" checked style="margin-right: 10px;">
-                    📊 Excel (CSV)
+                    Excel (CSV)
                 </label>
                 <label style="display: flex; align-items: center; margin: 10px 0; cursor: pointer;">
                     <input type="radio" name="format" value="json" style="margin-right: 10px;">
-                    📄 JSON
+                    JSON
                 </label>
             </div>
         </div>
         
         <div style="text-align: center;">
             <button id="exportConfirmBtn" style="
-                background: #28a745;
+                background: var(--btn-success);
                 color: white;
                 border: none;
                 padding: 12px 24px;
@@ -289,20 +294,20 @@ function createExportModal() {
                 cursor: pointer;
                 font-size: 16px;
                 margin-right: 10px;
-            " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-                📥 Exportar
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-success)'">
+                Exportar
             </button>
             
             <button id="exportCancelBtn" style="
-                background: #6c757d;
+                background: var(--btn-secondary);
                 color: white;
                 border: none;
                 padding: 12px 24px;
                 border-radius: 5px;
                 cursor: pointer;
                 font-size: 16px;
-            " onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
-                ❌ Cancelar
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-secondary)'">
+                Cancelar
             </button>
         </div>
     `;
@@ -425,6 +430,10 @@ function setupAdvancedActions() {
     document.getElementById('returnItemBtn').addEventListener('click', showReturnModal);
     document.getElementById('transferItemBtn').addEventListener('click', showTransferModal);
     document.getElementById('batchActionsBtn').addEventListener('click', showBatchModal);
+    
+    // Novas ações
+    document.getElementById('addServiceOrderBtn').addEventListener('click', showServiceOrderModal);
+    document.getElementById('addPasswordBtn').addEventListener('click', showPasswordModal);
 }
 
 /**
@@ -463,8 +472,8 @@ function createReturnModal() {
     const today = new Date().toISOString().split('T')[0];
     
     modal.innerHTML = `
-        <h2 style="margin-top: 0; color: #0056b3; border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
-            🔄 Devolver Item ao Armazém
+        <h2 style="margin-top: 0; color: var(--btn-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
+            Devolver Item ao Armazém
         </h2>
         
         <div style="margin-bottom: 15px;">
@@ -525,7 +534,7 @@ function createReturnModal() {
         
         <div style="text-align: center;">
             <button id="confirmReturnBtn" style="
-                background: #28a745;
+                background: var(--btn-success);
                 color: white;
                 border: none;
                 padding: 12px 24px;
@@ -533,20 +542,20 @@ function createReturnModal() {
                 cursor: pointer;
                 font-size: 16px;
                 margin-right: 10px;
-            " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-                ✅ Confirmar Devolução
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-success)'">
+                Confirmar Devolução
             </button>
             
             <button id="cancelReturnBtn" style="
-                background: #6c757d;
+                background: var(--btn-secondary);
                 color: white;
                 border: none;
                 padding: 12px 24px;
                 border-radius: 5px;
                 cursor: pointer;
                 font-size: 16px;
-            " onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
-                ❌ Cancelar
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-secondary)'">
+                Cancelar
             </button>
         </div>
     `;
@@ -660,8 +669,8 @@ function createTransferModal() {
     const today = new Date().toISOString().split('T')[0];
     
     modal.innerHTML = `
-        <h2 style="margin-top: 0; color: #0056b3; border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
-            🔄 Transferir Entre Setores
+        <h2 style="margin-top: 0; color: var(--btn-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
+            Transferir Entre Setores
         </h2>
         
         <div style="margin-bottom: 15px;">
@@ -782,7 +791,7 @@ function createTransferModal() {
         
         <div style="text-align: center;">
             <button id="confirmTransferBtn" style="
-                background: #28a745;
+                background: var(--btn-success);
                 color: white;
                 border: none;
                 padding: 12px 24px;
@@ -790,20 +799,20 @@ function createTransferModal() {
                 cursor: pointer;
                 font-size: 16px;
                 margin-right: 10px;
-            " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-                ✅ Confirmar Transferência
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-success)'">
+                Confirmar Transferência
             </button>
             
             <button id="cancelTransferBtn" style="
-                background: #6c757d;
+                background: var(--btn-secondary);
                 color: white;
                 border: none;
                 padding: 12px 24px;
                 border-radius: 5px;
                 cursor: pointer;
                 font-size: 16px;
-            " onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
-                ❌ Cancelar
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-secondary)'">
+                Cancelar
             </button>
         </div>
     `;
@@ -904,8 +913,8 @@ function createBatchModal() {
     `;
     
     modal.innerHTML = `
-        <h2 style="margin-top: 0; color: #0056b3; border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
-            📦 Ações em Lote
+        <h2 style="margin-top: 0; color: var(--btn-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
+            Ações em Lote
         </h2>
         
         <div style="margin-bottom: 20px;">
@@ -913,11 +922,11 @@ function createBatchModal() {
             <div style="margin: 10px 0;">
                 <label style="display: flex; align-items: center; margin: 10px 0; cursor: pointer;">
                     <input type="radio" name="batchAction" value="add" checked style="margin-right: 10px;">
-                    ➕ Adicionar múltiplos itens
+                    Adicionar múltiplos itens
                 </label>
                 <label style="display: flex; align-items: center; margin: 10px 0; cursor: pointer;">
                     <input type="radio" name="batchAction" value="withdraw" style="margin-right: 10px;">
-                    📤 Retirar múltiplos itens
+                    Retirar múltiplos itens
                 </label>
             </div>
         </div>
@@ -943,7 +952,7 @@ Mouse, 2" style="
         
         <div style="text-align: center;">
             <button id="confirmBatchBtn" style="
-                background: #28a745;
+                background: var(--btn-success);
                 color: white;
                 border: none;
                 padding: 12px 24px;
@@ -951,20 +960,20 @@ Mouse, 2" style="
                 cursor: pointer;
                 font-size: 16px;
                 margin-right: 10px;
-            " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-                ✅ Executar Ação
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-success)'">
+                Executar Ação
             </button>
             
             <button id="cancelBatchBtn" style="
-                background: #6c757d;
+                background: var(--btn-secondary);
                 color: white;
                 border: none;
                 padding: 12px 24px;
                 border-radius: 5px;
                 cursor: pointer;
                 font-size: 16px;
-            " onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
-                ❌ Cancelar
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-secondary)'">
+                Cancelar
             </button>
         </div>
     `;
@@ -1101,7 +1110,7 @@ function setupEventListeners() {
     // Botão para salvar alterações no banco de dados
     const header = document.querySelector('header nav');
     const saveBtn = document.createElement('button');
-    saveBtn.textContent = '💾 Salvar Alterações';
+            saveBtn.textContent = 'Salvar Alterações';
     saveBtn.title = 'Salvar alterações no banco de dados (Ctrl+S)';
     saveBtn.onclick = showSaveDatabaseDialog;
     header.appendChild(saveBtn);
@@ -1184,8 +1193,8 @@ function createWithdrawModal(item) {
     const today = new Date().toISOString().split('T')[0];
     
     modal.innerHTML = `
-        <h2 style="margin-top: 0; color: #0056b3; border-bottom: 2px solid #eee; padding-bottom: 15px;">
-            📤 Retirar Item do Armazém
+        <h2 style="margin-top: 0; color: var(--btn-primary); border-bottom: 2px solid #eee; padding-bottom: 15px;">
+            Retirar Item do Armazém
         </h2>
         
         <div style="margin-bottom: 20px;">
@@ -1249,7 +1258,7 @@ function createWithdrawModal(item) {
         
         <div style="text-align: center;">
             <button id="confirmWithdrawBtn" style="
-                background: #28a745;
+                background: var(--btn-success);
                 color: white;
                 border: none;
                 padding: 12px 24px;
@@ -1257,20 +1266,20 @@ function createWithdrawModal(item) {
                 cursor: pointer;
                 font-size: 16px;
                 margin-right: 10px;
-            " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-                ✅ Confirmar Retirada
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-success)'">
+                Confirmar Retirada
             </button>
             
             <button id="cancelWithdrawBtn" style="
-                background: #6c757d;
+                background: var(--btn-secondary);
                 color: white;
                 border: none;
                 padding: 12px 24px;
                 border-radius: 5px;
                 cursor: pointer;
                 font-size: 16px;
-            " onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
-                ❌ Cancelar
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-secondary)'">
+                Cancelar
             </button>
         </div>
     `;
@@ -1367,9 +1376,9 @@ function showNotification(message, type = 'success') {
     notification.textContent = message;
     
     const colors = {
-        success: '#4CAF50',
-        warning: '#ff9800',
-        error: '#f44336'
+        success: 'var(--btn-success)',
+        warning: 'var(--btn-warning)',
+        error: 'var(--btn-danger)'
     };
     
     notification.style.cssText = `
@@ -1464,8 +1473,8 @@ function createSaveModal(newDbContent) {
     `;
     
     modal.innerHTML = `
-        <h2 style="margin-top: 0; color: #0056b3; border-bottom: 2px solid #eee; padding-bottom: 15px;">
-            💾 Salvar Alterações no Banco de Dados
+        <h2 style="margin-top: 0; color: var(--btn-primary); border-bottom: 2px solid #eee; padding-bottom: 15px;">
+            Salvar Alterações no Banco de Dados
         </h2>
         
         <p style="margin-bottom: 20px; line-height: 1.6; color: #555;">
@@ -1475,7 +1484,7 @@ function createSaveModal(newDbContent) {
         </p>
         
         <button id="generateDbBtn" style="
-            background: #28a745;
+            background: var(--btn-success);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -1484,8 +1493,8 @@ function createSaveModal(newDbContent) {
             font-size: 16px;
             margin-bottom: 20px;
             transition: background 0.2s;
-        " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-            🔄 Gerar Novo Banco de Dados
+        " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-success)'">
+            Gerar Novo Banco de Dados
         </button>
         
         <textarea id="outputDb" readonly style="
@@ -1496,14 +1505,14 @@ function createSaveModal(newDbContent) {
             border-radius: 5px;
             font-family: 'Courier New', monospace;
             font-size: 12px;
-            background: #f8f9fa;
+            background: var(--bg-secondary);
             resize: vertical;
             margin-bottom: 20px;
         " placeholder="O conteúdo do banco de dados aparecerá aqui após clicar em 'Gerar Novo Banco de Dados'..."></textarea>
         
         <div style="text-align: center;">
             <button id="closeModalBtn" style="
-                background: #6c757d;
+                background: var(--btn-secondary);
                 color: white;
                 border: none;
                 padding: 10px 20px;
@@ -1511,12 +1520,12 @@ function createSaveModal(newDbContent) {
                 cursor: pointer;
                 font-size: 14px;
                 margin-right: 10px;
-            " onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
-                ❌ Fechar
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-secondary)'">
+                Fechar
             </button>
             
             <button id="copyContentBtn" style="
-                background: #007bff;
+                background: var(--btn-primary);
                 color: white;
                 border: none;
                 padding: 10px 20px;
@@ -1524,8 +1533,8 @@ function createSaveModal(newDbContent) {
                 cursor: pointer;
                 font-size: 14px;
                 margin-left: 10px;
-            " onmouseover="this.style.background='#0056b3'" onmouseout="this.style.background='#007bff'">
-                📋 Copiar Conteúdo
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-primary)'">
+                Copiar Conteúdo
             </button>
         </div>
     `;
@@ -1573,6 +1582,8 @@ function setupModalEventListeners(overlay, modal, newDbContent) {
 function renderAll() {
     renderInventory();
     renderWithdrawals();
+    renderServiceOrders();
+    renderPasswords();
     renderDrivers();
     renderCodes();
     renderFiles();
@@ -1605,9 +1616,9 @@ function renderInventory() {
                 <span class="quantity-label">unidades</span>
             </div>
             <div class="item-actions">
-                <button class="add-btn" onclick="addQuantity(${item.id})" title="Adicionar item">➕ Adicionar</button>
-                <button class="withdraw-btn" onclick="withdrawItem(${item.id})" ${item.quantity <= 0 ? 'disabled' : ''} title="Retirar item">📤 Retirar</button>
-                <button class="remove-btn" onclick="removeItem(${item.id})" title="Remover item">Excluir 🗑️</button>
+                <button class="add-btn" onclick="addQuantity(${item.id})" title="Adicionar item">Adicionar</button>
+                <button class="withdraw-btn" onclick="withdrawItem(${item.id})" ${item.quantity <= 0 ? 'disabled' : ''} title="Retirar item">Retirar</button>
+                <button class="remove-btn" onclick="removeItem(${item.id})" title="Remover item">Excluir</button>
             </div>
         `;
         list.appendChild(div);
@@ -1630,7 +1641,7 @@ function renderWithdrawals() {
             allMovements.push({
                 ...w,
                 type: 'withdrawal',
-                displayName: `📤 Retirada: ${w.itemName}`
+                displayName: `Retirada: ${w.itemName}`
             });
         });
     }
@@ -1641,7 +1652,7 @@ function renderWithdrawals() {
             allMovements.push({
                 ...r,
                 type: 'return',
-                displayName: `🔄 Devolução: ${r.itemName}`
+                displayName: `Devolução: ${r.itemName}`
             });
         });
     }
@@ -1652,7 +1663,7 @@ function renderWithdrawals() {
             allMovements.push({
                 ...t,
                 type: 'transfer',
-                displayName: `🔄 Transferência: ${t.itemName}`
+                displayName: `Transferência: ${t.itemName}`
             });
         });
     }
@@ -1840,4 +1851,597 @@ function copyToClipboard(codeId) {
         showError('Falha ao copiar o código.');
         console.error('Erro de cópia:', err);
     });
+}
+
+// =============================================================================
+// NOVAS FUNCIONALIDADES - ORDENS DE SERVIÇO
+// =============================================================================
+
+/**
+ * Mostra modal para criar nova ordem de serviço
+ */
+function showServiceOrderModal() {
+    const overlay = createOverlay();
+    const modal = createServiceOrderModal();
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+    
+    setupServiceOrderModalEventListeners(overlay, modal);
+}
+
+/**
+ * Cria modal de ordem de serviço
+ */
+function createServiceOrderModal() {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 800px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        padding: 30px;
+        z-index: 1001;
+        box-shadow: var(--hover-shadow);
+        color: var(--text-primary);
+        max-height: 80vh;
+        overflow-y: auto;
+    `;
+    
+    const today = new Date().toISOString().split('T')[0];
+    
+    modal.innerHTML = `
+        <h2 style="margin-top: 0; color: var(--btn-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
+            Nova Ordem de Serviço
+        </h2>
+        
+        <div class="service-type-toggle">
+            <input type="radio" id="maintenance" name="serviceType" value="maintenance" checked>
+            <label for="maintenance">Manutenção</label>
+            <input type="radio" id="inspection" name="serviceType" value="inspection">
+            <label for="inspection">Vistoria/Visita</label>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="serviceSector">Setor:</label>
+                <select id="serviceSector" required>
+                    <option value="">Selecione o setor...</option>
+                    <option value="Administrativo">Administrativo</option>
+                    <option value="Financeiro">Financeiro</option>
+                    <option value="Recursos Humanos">Recursos Humanos</option>
+                    <option value="Manutenção">Manutenção</option>
+                    <option value="Limpeza">Limpeza</option>
+                    <option value="Segurança">Segurança</option>
+                    <option value="Educação">Educação</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Obras">Obras</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Cultura">Cultura</option>
+                    <option value="Esporte">Esporte</option>
+                    <option value="Meio Ambiente">Meio Ambiente</option>
+                    <option value="Assistência Social">Assistência Social</option>
+                    <option value="Tributação">Tributação</option>
+                    <option value="Engenharia">Engenharia</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="serviceDate">Data:</label>
+                <input type="date" id="serviceDate" value="${today}" required>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="serviceTechnicians">Técnicos Responsáveis:</label>
+                <input type="text" id="serviceTechnicians" placeholder="Nomes dos técnicos" required>
+            </div>
+            <div class="form-group">
+                <label for="serviceReceptionist">Quem Recepcionou:</label>
+                <input type="text" id="serviceReceptionist" placeholder="Nome da pessoa" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="serviceDescription">Descrição do Serviço/Problema:</label>
+            <textarea id="serviceDescription" placeholder="Descreva o que foi solicitado ou o problema encontrado..." required></textarea>
+        </div>
+        
+        <div id="maintenanceFields" class="form-group">
+            <label for="serviceSolution">Solução Aplicada:</label>
+            <textarea id="serviceSolution" placeholder="Descreva o que foi feito para resolver o problema..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="serviceMaterials">Materiais Utilizados:</label>
+            <textarea id="serviceMaterials" placeholder="Liste os materiais utilizados (opcional)"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="serviceObservations">Observações Adicionais:</label>
+            <textarea id="serviceObservations" placeholder="Outras informações relevantes..."></textarea>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="saveServiceOrderBtn" style="
+                background: var(--btn-success);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-right: 10px;
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-success)'">
+                Salvar Ordem
+            </button>
+            
+            <button id="cancelServiceOrderBtn" style="
+                background: var(--btn-secondary);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-secondary)'">
+                Cancelar
+            </button>
+        </div>
+    `;
+    
+    // Adiciona funcionalidade para mostrar/ocultar campos de manutenção
+    const maintenanceRadio = modal.querySelector('#maintenance');
+    const inspectionRadio = modal.querySelector('#inspection');
+    const maintenanceFields = modal.querySelector('#maintenanceFields');
+    
+    function toggleMaintenanceFields() {
+        if (maintenanceRadio.checked) {
+            maintenanceFields.style.display = 'block';
+        } else {
+            maintenanceFields.style.display = 'none';
+        }
+    }
+    
+    maintenanceRadio.addEventListener('change', toggleMaintenanceFields);
+    inspectionRadio.addEventListener('change', toggleMaintenanceFields);
+    toggleMaintenanceFields();
+    
+    return modal;
+}
+
+/**
+ * Configura event listeners do modal de ordem de serviço
+ */
+function setupServiceOrderModalEventListeners(overlay, modal) {
+    document.getElementById('saveServiceOrderBtn').addEventListener('click', () => {
+        const serviceType = document.querySelector('input[name="serviceType"]:checked').value;
+        const sector = document.getElementById('serviceSector').value;
+        const date = document.getElementById('serviceDate').value;
+        const technicians = document.getElementById('serviceTechnicians').value;
+        const receptionist = document.getElementById('serviceReceptionist').value;
+        const description = document.getElementById('serviceDescription').value;
+        const solution = document.getElementById('serviceSolution').value;
+        const materials = document.getElementById('serviceMaterials').value;
+        const observations = document.getElementById('serviceObservations').value;
+        
+        if (!sector || !date || !technicians || !receptionist || !description) {
+            showNotification('Por favor, preencha todos os campos obrigatórios!', 'warning');
+            return;
+        }
+        
+        const serviceOrder = {
+            id: Date.now(),
+            type: serviceType,
+            sector: sector,
+            date: date,
+            technicians: technicians,
+            receptionist: receptionist,
+            description: description,
+            solution: solution,
+            materials: materials,
+            observations: observations,
+            timestamp: new Date().toISOString()
+        };
+        
+        database.serviceOrders.push(serviceOrder);
+        saveToLocalStorage();
+        renderServiceOrders();
+        
+        // Fecha o modal
+        document.body.removeChild(overlay);
+        document.body.removeChild(modal);
+        
+        showNotification('Ordem de serviço criada com sucesso!', 'success');
+    });
+    
+    const closeModal = () => {
+        document.body.removeChild(overlay);
+        document.body.removeChild(modal);
+    };
+    
+    document.getElementById('cancelServiceOrderBtn').addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+}
+
+/**
+ * Renderiza a seção de ordens de serviço
+ */
+function renderServiceOrders() {
+    const list = document.getElementById('serviceOrdersList');
+    list.innerHTML = '';
+    
+    if (!database.serviceOrders || database.serviceOrders.length === 0) {
+        list.innerHTML = '<p>Nenhuma ordem de serviço registrada</p>';
+        return;
+    }
+    
+    // Ordena por data mais recente
+    const sortedOrders = database.serviceOrders.sort((a, b) => 
+        new Date(b.date) - new Date(a.date)
+    );
+    
+    sortedOrders.forEach(order => {
+        const div = document.createElement('div');
+        div.className = 'service-order-item';
+        
+        const date = new Date(order.date).toLocaleDateString('pt-BR');
+        const typeLabel = order.type === 'maintenance' ? 'Manutenção' : 'Vistoria';
+        
+        let details = `
+            <p><strong>Tipo:</strong> ${typeLabel}</p>
+            <p><strong>Setor:</strong> ${order.sector}</p>
+            <p><strong>Técnicos:</strong> ${order.technicians}</p>
+            <p><strong>Recepcionou:</strong> ${order.receptionist}</p>
+            <p><strong>Descrição:</strong> ${order.description}</p>
+        `;
+        
+        if (order.solution) {
+            details += `<p><strong>Solução:</strong> ${order.solution}</p>`;
+        }
+        
+        if (order.materials) {
+            details += `<p><strong>Materiais:</strong> ${order.materials}</p>`;
+        }
+        
+        if (order.observations) {
+            details += `<p><strong>Observações:</strong> ${order.observations}</p>`;
+        }
+        
+        div.innerHTML = `
+            <div class="service-order-header">
+                <h4 class="service-order-title">${typeLabel} - ${order.sector}</h4>
+                <span class="service-order-date">${date}</span>
+            </div>
+            <div class="service-order-details">
+                ${details}
+            </div>
+        `;
+        
+        list.appendChild(div);
+    });
+    
+    // Adiciona botão para gerar PDF
+    if (database.serviceOrders.length > 0) {
+        const pdfBtn = document.createElement('button');
+        pdfBtn.className = 'generate-pdf-btn';
+        pdfBtn.textContent = 'Gerar PDF das Ordens de Serviço';
+        pdfBtn.onclick = generateServiceOrdersPDF;
+        list.appendChild(pdfBtn);
+    }
+}
+
+// =============================================================================
+// NOVAS FUNCIONALIDADES - SENHAS E ACESSOS
+// =============================================================================
+
+/**
+ * Mostra modal para adicionar nova senha
+ */
+function showPasswordModal() {
+    const overlay = createOverlay();
+    const modal = createPasswordModal();
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+    
+    setupPasswordModalEventListeners(overlay, modal);
+}
+
+/**
+ * Cria modal de senha
+ */
+function createPasswordModal() {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 500px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        padding: 30px;
+        z-index: 1001;
+        box-shadow: var(--hover-shadow);
+        color: var(--text-primary);
+    `;
+    
+    modal.innerHTML = `
+        <h2 style="margin-top: 0; color: var(--btn-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
+            Nova Senha/Acesso
+        </h2>
+        
+        <div class="form-group">
+            <label for="passwordTitle">Título:</label>
+            <input type="text" id="passwordTitle" placeholder="Ex: WiFi Setor Administrativo" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="passwordCategory">Categoria:</label>
+            <select id="passwordCategory" required>
+                <option value="">Selecione a categoria...</option>
+                <option value="WiFi">WiFi</option>
+                <option value="Roteador">Roteador</option>
+                <option value="Sistema">Sistema</option>
+                <option value="Email">Email</option>
+                <option value="Servidor">Servidor</option>
+                <option value="Outro">Outro</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="passwordUsername">Usuário:</label>
+            <input type="text" id="passwordUsername" placeholder="Nome de usuário (se aplicável)">
+        </div>
+        
+        <div class="form-group">
+            <label for="passwordPassword">Senha:</label>
+            <input type="password" id="passwordPassword" placeholder="Senha" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="passwordUrl">URL/IP:</label>
+            <input type="text" id="passwordUrl" placeholder="Endereço de acesso (se aplicável)">
+        </div>
+        
+        <div class="form-group">
+            <label for="passwordNotes">Observações:</label>
+            <textarea id="passwordNotes" placeholder="Informações adicionais..."></textarea>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="savePasswordBtn" style="
+                background: var(--btn-success);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-right: 10px;
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-success)'">
+                Salvar Senha
+            </button>
+            
+            <button id="cancelPasswordBtn" style="
+                background: var(--btn-secondary);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            " onmouseover="this.style.background='var(--btn-hover)'" onmouseout="this.style.background='var(--btn-secondary)'">
+                Cancelar
+            </button>
+        </div>
+    `;
+    
+    return modal;
+}
+
+/**
+ * Configura event listeners do modal de senha
+ */
+function setupPasswordModalEventListeners(overlay, modal) {
+    document.getElementById('savePasswordBtn').addEventListener('click', () => {
+        const title = document.getElementById('passwordTitle').value;
+        const category = document.getElementById('passwordCategory').value;
+        const username = document.getElementById('passwordUsername').value;
+        const password = document.getElementById('passwordPassword').value;
+        const url = document.getElementById('passwordUrl').value;
+        const notes = document.getElementById('passwordNotes').value;
+        
+        if (!title || !category || !password) {
+            showNotification('Por favor, preencha os campos obrigatórios!', 'warning');
+            return;
+        }
+        
+        const passwordItem = {
+            id: Date.now(),
+            title: title,
+            category: category,
+            username: username,
+            password: password,
+            url: url,
+            notes: notes,
+            timestamp: new Date().toISOString()
+        };
+        
+        database.passwords.push(passwordItem);
+        saveToLocalStorage();
+        renderPasswords();
+        
+        // Fecha o modal
+        document.body.removeChild(overlay);
+        document.body.removeChild(modal);
+        
+        showNotification('Senha salva com sucesso!', 'success');
+    });
+    
+    const closeModal = () => {
+        document.body.removeChild(overlay);
+        document.body.removeChild(modal);
+    };
+    
+    document.getElementById('cancelPasswordBtn').addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+}
+
+/**
+ * Renderiza a seção de senhas
+ */
+function renderPasswords() {
+    const list = document.getElementById('passwordsList');
+    list.innerHTML = '';
+    
+    if (!database.passwords || database.passwords.length === 0) {
+        list.innerHTML = '<p>Nenhuma senha registrada</p>';
+        return;
+    }
+    
+    database.passwords.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'password-item';
+        
+        div.innerHTML = `
+            <div class="password-header">
+                <h4 class="password-title">${item.title}</h4>
+                <span class="password-category">${item.category}</span>
+            </div>
+            <div class="password-details">
+                ${item.username ? `<p><strong>Usuário:</strong> ${item.username}</p>` : ''}
+                <p><strong>Senha:</strong> <span id="password-${item.id}" style="display: none;">${item.password}</span><span id="dots-${item.id}">••••••••</span></p>
+                ${item.url ? `<p><strong>URL/IP:</strong> ${item.url}</p>` : ''}
+                ${item.notes ? `<p><strong>Observações:</strong> ${item.notes}</p>` : ''}
+            </div>
+            <div class="password-actions">
+                <button class="show-password-btn" onclick="togglePassword(${item.id})">Mostrar/Ocultar</button>
+                <button class="copy-password-btn" onclick="copyPassword('${item.password}')">Copiar Senha</button>
+            </div>
+        `;
+        
+        list.appendChild(div);
+    });
+}
+
+/**
+ * Alterna entre mostrar e ocultar senha
+ */
+function togglePassword(id) {
+    const passwordSpan = document.getElementById(`password-${id}`);
+    const dotsSpan = document.getElementById(`dots-${id}`);
+    
+    if (passwordSpan.style.display === 'none') {
+        passwordSpan.style.display = 'inline';
+        dotsSpan.style.display = 'none';
+    } else {
+        passwordSpan.style.display = 'none';
+        dotsSpan.style.display = 'inline';
+    }
+}
+
+/**
+ * Copia senha para a área de transferência
+ */
+function copyPassword(password) {
+    navigator.clipboard.writeText(password).then(() => {
+        showNotification('Senha copiada para a área de transferência!', 'success');
+    }, (err) => {
+        showError('Falha ao copiar a senha.');
+        console.error('Erro de cópia:', err);
+    });
+}
+
+// =============================================================================
+// GERAÇÃO DE PDF
+// =============================================================================
+
+/**
+ * Gera PDF das ordens de serviço
+ */
+function generateServiceOrdersPDF() {
+    // Cria o conteúdo do PDF
+    let pdfContent = `
+        <html>
+        <head>
+            <title>Relatório de Ordens de Serviço</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                h1 { color: #333; text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                .order { margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
+                .order-header { background: #f5f5f5; padding: 10px; margin: -15px -15px 15px -15px; border-radius: 5px 5px 0 0; }
+                .order-title { margin: 0; color: #333; }
+                .order-date { float: right; background: #007bff; color: white; padding: 5px 10px; border-radius: 15px; font-size: 12px; }
+                .order-details p { margin: 8px 0; }
+                .order-details strong { color: #333; }
+                .page-break { page-break-before: always; }
+            </style>
+        </head>
+        <body>
+            <h1>Relatório de Ordens de Serviço</h1>
+            <p><strong>Data de Geração:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+            <p><strong>Total de Ordens:</strong> ${database.serviceOrders.length}</p>
+    `;
+    
+    database.serviceOrders.forEach((order, index) => {
+        if (index > 0) {
+            pdfContent += '<div class="page-break"></div>';
+        }
+        
+        const date = new Date(order.date).toLocaleDateString('pt-BR');
+        const typeLabel = order.type === 'maintenance' ? 'Manutenção' : 'Vistoria';
+        
+        let details = `
+            <p><strong>Tipo:</strong> ${typeLabel}</p>
+            <p><strong>Setor:</strong> ${order.sector}</p>
+            <p><strong>Técnicos:</strong> ${order.technicians}</p>
+            <p><strong>Recepcionou:</strong> ${order.receptionist}</p>
+            <p><strong>Descrição:</strong> ${order.description}</p>
+        `;
+        
+        if (order.solution) {
+            details += `<p><strong>Solução:</strong> ${order.solution}</p>`;
+        }
+        
+        if (order.materials) {
+            details += `<p><strong>Materiais:</strong> ${order.materials}</p>`;
+        }
+        
+        if (order.observations) {
+            details += `<p><strong>Observações:</strong> ${order.observations}</p>`;
+        }
+        
+        pdfContent += `
+            <div class="order">
+                <div class="order-header">
+                    <h3 class="order-title">${typeLabel} - ${order.sector}</h3>
+                    <span class="order-date">${date}</span>
+                </div>
+                <div class="order-details">
+                    ${details}
+                </div>
+            </div>
+        `;
+    });
+    
+    pdfContent += '</body></html>';
+    
+    // Cria uma nova janela com o conteúdo
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(pdfContent);
+    newWindow.document.close();
+    
+    // Aguarda o carregamento e imprime
+    newWindow.onload = function() {
+        newWindow.print();
+    };
+    
+    showNotification('PDF gerado com sucesso!', 'success');
 }
